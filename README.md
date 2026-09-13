@@ -79,33 +79,28 @@ the key by hand and let the pairing be refused if KyRecovery presents a differen
 **A KyRecovery on your own network.** Everything goes in `.env`, and the container must be
 recreated to pick it up:
 
-Everything lives in `.env`, replaced in place (never appended twice): the overlay joins
-`COMPOSE_FILE`, the resolver and the private-recovery flag sit next to it, since every later compose
-command recreates the container from `.env`. Two variants, one block each, so a single
-copy-paste can never run both:
-
-Published image:
+The snippet appends `docker-compose.lan-dns.yml` to whatever `COMPOSE_FILE` chain `.env` already
+holds (build overlay, local override) and leaves the rest of the chain alone; the resolver and the private-recovery flag
+are replaced in place next to it. Re-running it is a no-op. One block for every install type:
 
 ```bash
-(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" && printf 'COMPOSE_FILE=docker-compose.yml:docker-compose.lan-dns.yml\nKYBOOKMARKS_DNS=192.168.1.1\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' >> "$t" && mv "$t" .env)
+(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env \
+  && cf=$({ grep '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2-) && cf=${cf:-docker-compose.yml} \
+  && case ":$cf:" in *:docker-compose.lan-dns.yml:*) ;; *) cf="$cf:docker-compose.lan-dns.yml";; esac \
+  && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" \
+  && printf 'COMPOSE_FILE=%s\nKYBOOKMARKS_DNS=192.168.1.1\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' "$cf" >> "$t" && mv "$t" .env)
 docker compose up -d --force-recreate
 docker inspect KyBookmarks-Server --format '{{.HostConfig.Dns}}'   # must print [192.168.1.1]
 ```
 
-Source install:
+Turning it off: remove the resolver and the flag, strip only `docker-compose.lan-dns.yml` from
+`COMPOSE_FILE` (a build overlay or local override in the chain survives), and recreate:
 
 ```bash
-(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" && printf 'COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml:docker-compose.lan-dns.yml\nKYBOOKMARKS_DNS=192.168.1.1\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' >> "$t" && mv "$t" .env)
-docker compose up -d --force-recreate
-docker inspect KyBookmarks-Server --format '{{.HostConfig.Dns}}'   # must print [192.168.1.1]
-```
-
-Turning it off: remove the resolver and the flag, drop the overlay from `COMPOSE_FILE` (a
-published-image install deletes the line; a source install re-runs its install line
-afterwards), and recreate:
-
-```bash
-(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" && mv "$t" .env)
+(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env \
+  && cf=$({ grep '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2- | tr ':' '\n' | grep -vx docker-compose.lan-dns.yml | paste -sd: -) \
+  && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" \
+  && { [ -z "$cf" ] || [ "$cf" = docker-compose.yml ] || printf 'COMPOSE_FILE=%s\n' "$cf" >> "$t"; } && mv "$t" .env)
 docker compose up -d --force-recreate
 ```
 
