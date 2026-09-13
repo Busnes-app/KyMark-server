@@ -4,7 +4,11 @@
 # not in the base file. A value in .env alone does nothing; pass it on the command line and
 # recreate the container:
 #
-#   KYBOOKMARKS_DNS=192.168.1.1 docker compose -f docker-compose.yml -f docker-compose.lan-dns.yml up -d --force-recreate
+# Select it by appending it to COMPOSE_FILE in .env, never with -f: an explicit -f list
+# replaces COMPOSE_FILE outright and would drop the build overlay of a source install.
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.lan-dns.yml            (published image)
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml:docker-compose.lan-dns.yml   (source)
+#   KYBOOKMARKS_DNS=192.168.1.1 docker compose up -d --force-recreate
 services:
   kybookmarks-server:
     dns:

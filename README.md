@@ -9,6 +9,8 @@ this file is for the operator.
 
 ```bash
 (umask 077; echo 'COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml' >> .env)   # source build; omit to run the published image
+# Existing source install? Add that line before the first `up -d` on this checkout: the old
+# image name is gone and a bare `up -d` would pull the published image instead of rebuilding.
 docker compose up -d
 docker compose pull && docker compose up -d   # update a published-image install
 ```
