@@ -8,7 +8,7 @@ this file is for the operator.
 ## Run it
 
 ```bash
-(umask 077; echo 'COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml' >> .env)   # source build; omit to run the published image
+(umask 077; echo 'COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml' >> .env); chmod 600 .env   # source build; omit to run the published image
 # Existing source install? Add that line before the first `up -d` on this checkout: the old
 # image name is gone and a bare `up -d` would pull the published image instead of rebuilding.
 docker compose up -d
@@ -64,10 +64,11 @@ the key by hand and let the pairing be refused if KyRecovery presents a differen
 neither:
 
 ```bash
-# Append :docker-compose.lan-dns.yml to COMPOSE_FILE in .env first (a published-image install
-# sets COMPOSE_FILE=docker-compose.yml:docker-compose.lan-dns.yml). An explicit -f list would
-# drop the build overlay for a source install.
-KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true KYBOOKMARKS_DNS=192.168.1.1 docker compose up -d --force-recreate
+# Both live in .env: the overlay joins COMPOSE_FILE (a published-image install uses
+# COMPOSE_FILE=docker-compose.yml:docker-compose.lan-dns.yml) and the resolver next to it,
+# since every later compose command needs it once the overlay is in the chain.
+(umask 077; printf 'COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml:docker-compose.lan-dns.yml\nKYBOOKMARKS_DNS=192.168.1.1\n' >> .env); chmod 600 .env
+KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true docker compose up -d --force-recreate
 docker inspect KyBookmarks-Server --format '{{.HostConfig.Dns}}'   # must print [192.168.1.1]
 ```
 

@@ -14,10 +14,11 @@ that made the backup never could. That is the point, and it is also why you shou
 procedure once as a drill before you ever need it.
 
 The `docker compose` commands below use the base file alone, which runs the published
-image. If this server was installed from source, `COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml`
-must be in `.env` (the README install step writes it); otherwise a restore silently pulls a
-different binary than the one you built and are running. A published-image install reuses the
-image already on the host; run `docker compose pull` first to restore onto the newest attested one.
+image. Source install: confirm `COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml` is in
+`.env` before the first command (the "Run it" step in `README.md` writes it); otherwise
+a restore silently pulls a different binary than the one you built and are running.
+Published install: never restore onto a floating `:latest`; the step before the restore
+command pins and verifies a digest.
 
 ## What a capsule holds
 
@@ -58,6 +59,16 @@ With the binary (from a release, or `go build ./cmd/server`):
 
 ```bash
 kybookmarks-server restore -capsule KyBookmarks.cap-KyBookmarks-XXXXXXXX.kycap -to ./restored
+```
+
+For a published-image install, and always on a fresh recovery machine, pin the image to a
+digest you have verified before it reads a single share (`gh` must be logged in):
+
+```bash
+d=$(docker buildx imagetools inspect ghcr.io/busness-app/kybookmarks-server:latest --format '{{.Manifest.Digest}}')
+gh attestation verify "oci://ghcr.io/busness-app/kybookmarks-server@$d" --repo Busness-app/kybookmarks-server \
+  --cert-identity https://github.com/Busness-app/kybookmarks-server/.github/workflows/ci.yml@refs/heads/master
+(umask 077; echo "KYBOOKMARKS_IMAGE=ghcr.io/busness-app/kybookmarks-server@$d" >> .env); chmod 600 .env
 ```
 
 With Docker Compose, from the repository directory, mount the capsule and an empty target
