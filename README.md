@@ -67,12 +67,23 @@ the key by hand and let the pairing be refused if KyRecovery presents a differen
 **A KyRecovery on your own network.** Everything goes in `.env`, and the container must be
 recreated to pick it up:
 
+Everything lives in `.env`, replaced in place (never appended twice): the overlay joins
+`COMPOSE_FILE`, the resolver and the private-recovery flag sit next to it, since every later compose
+command recreates the container from `.env`. Two variants, one block each, so a single
+copy-paste can never run both:
+
+Published image:
+
 ```bash
-# All of it lives in .env, replaced in place (never appended twice): the overlay joins COMPOSE_FILE,
-# the resolver and the private-recovery flag sit next to it, since every later compose command recreates the
-# container from .env. Pick ONE line:
-(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" && printf 'COMPOSE_FILE=docker-compose.yml:docker-compose.lan-dns.yml\nKYBOOKMARKS_DNS=192.168.1.1\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' >> "$t" && mv "$t" .env)   # published image
-(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" && printf 'COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml:docker-compose.lan-dns.yml\nKYBOOKMARKS_DNS=192.168.1.1\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' >> "$t" && mv "$t" .env)   # source install
+(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" && printf 'COMPOSE_FILE=docker-compose.yml:docker-compose.lan-dns.yml\nKYBOOKMARKS_DNS=192.168.1.1\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' >> "$t" && mv "$t" .env)
+docker compose up -d --force-recreate
+docker inspect KyBookmarks-Server --format '{{.HostConfig.Dns}}'   # must print [192.168.1.1]
+```
+
+Source install:
+
+```bash
+(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" && printf 'COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml:docker-compose.lan-dns.yml\nKYBOOKMARKS_DNS=192.168.1.1\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' >> "$t" && mv "$t" .env)
 docker compose up -d --force-recreate
 docker inspect KyBookmarks-Server --format '{{.HostConfig.Dns}}'   # must print [192.168.1.1]
 ```
