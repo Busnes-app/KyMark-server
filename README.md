@@ -18,7 +18,11 @@ Source install (never paste this into a published-image install: the build overl
 new checkout):
 
 ```bash
-(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v -e '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } > "$t" && printf 'COMPOSE_FILE=docker-compose.yml:docker-compose.build.yml\n' >> "$t" && mv "$t" .env)
+(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env \
+  && cf=$({ grep '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2-) && cf=${cf:-docker-compose.yml} \
+  && case ":$cf:" in *:docker-compose.build.yml:*) ;; *) cf="$cf:docker-compose.build.yml";; esac \
+  && { grep -v -e '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } > "$t" \
+  && printf 'COMPOSE_FILE=%s\n' "$cf" >> "$t" && mv "$t" .env)
 docker compose up -d
 ```
 
@@ -92,7 +96,7 @@ run, and the flag is set to true. Re-running it is a no-op. One block for every 
   && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" \
   && printf 'COMPOSE_FILE=%s\nKYBOOKMARKS_DNS=%s\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' "$cf" "$dns" >> "$t" && mv "$t" .env)
 docker compose up -d --force-recreate
-docker inspect KyBookmarks-Server --format '{{.HostConfig.Dns}}'   # must print [192.168.1.1]
+docker inspect KyBookmarks-Server --format '{{.HostConfig.Dns}}'   # must print the resolver in .env, e.g. [192.168.1.1]
 ```
 
 Turning it off: remove the resolver and the flag, strip only `docker-compose.lan-dns.yml` from
@@ -102,7 +106,7 @@ Turning it off: remove the resolver and the flag, strip only `docker-compose.lan
 (umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env \
   && cf=$({ grep '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2- | tr ':' '\n' | grep -vx docker-compose.lan-dns.yml | paste -sd: -) \
   && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" \
-  && { [ -z "$cf" ] || [ "$cf" = docker-compose.yml ] || printf 'COMPOSE_FILE=%s\n' "$cf" "$dns" >> "$t"; } && mv "$t" .env)
+  && { [ -z "$cf" ] || [ "$cf" = docker-compose.yml ] || printf 'COMPOSE_FILE=%s\n' "$cf" >> "$t"; } && mv "$t" .env)
 docker compose up -d --force-recreate
 ```
 
