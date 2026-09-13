@@ -7,9 +7,35 @@ this file is for the operator.
 
 ## Run it
 
+Published image:
+
 ```bash
 docker compose up -d
 ```
+
+Source install (never paste this into a published-image install: the build overlay wins over a
+`KYBOOKMARKS_IMAGE` digest pin, and a source install must set this line before its first `up -d` on a
+new checkout; an install from before the published image existed has no such line yet, so run
+this block once and confirm with `docker compose config --images`, which must print
+`kybookmarks-server:local` rather than the `ghcr.io` name):
+
+```bash
+(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env \
+  && cf=$({ grep '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2-) && cf=${cf:-docker-compose.yml} \
+  && case ":$cf:" in *:docker-compose.build.yml:*) ;; *) cf="$cf:docker-compose.build.yml";; esac \
+  && { grep -v -e '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } > "$t" \
+  && printf 'COMPOSE_FILE=%s\n' "$cf" >> "$t" && mv "$t" .env)
+docker compose up -d
+```
+
+Update a published-image install on the rolling tag:
+
+```bash
+docker compose pull && docker compose up -d
+```
+
+A digest-pinned install (`KYBOOKMARKS_IMAGE` in `.env`) gets nothing from `pull`: re-run the pin recipe in
+`docker-compose.yml` with the commit sha you want first, or delete that line to follow `:latest` again.
 
 Open `http://127.0.0.1:5869` and complete first-run setup. Every variable below has a default
 except `SYNC_SECRET`, which has none on purpose.
@@ -56,14 +82,35 @@ receipts travel on the same connection. HTTPS protects those three, not the caps
 trusting a pairing, compare the key ID the Backup tab shows with the ceremony card, or pin
 the key by hand and let the pairing be refused if KyRecovery presents a different one.
 
-**A KyRecovery on your own network.** Two things are needed, and a value in `.env` alone does
-neither:
+**A KyRecovery on your own network.** Everything goes in `.env`, and the container must be
+recreated to pick it up:
+
+The snippet appends `docker-compose.lan-dns.yml` to whatever `COMPOSE_FILE` chain `.env` already
+holds (build overlay, local override) and leaves the rest of the chain alone; the resolver and the private-recovery flag
+sit next to it: a resolver you already set in `.env` or passed as
+`KYBOOKMARKS_DNS=<addr>` on the command line is used; there is no default, the block refuses to guess, and the flag is set to true. Re-running it is a no-op. One block for every install type:
 
 ```bash
-KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true \
-KYBOOKMARKS_DNS=192.168.1.1 \
-docker compose -f docker-compose.yml -f docker-compose.lan-dns.yml up -d --force-recreate
-docker inspect KyBookmarks-Server --format '{{.HostConfig.Dns}}'   # must print [192.168.1.1]
+(umask 077; touch .env \
+  && cf=$({ grep '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2-) && cf=${cf:-docker-compose.yml} \
+  && dns=${KYBOOKMARKS_DNS:-$({ grep '^KYBOOKMARKS_DNS=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2-)} \
+  && : "${dns:?no resolver chosen: re-run this block prefixed with KYBOOKMARKS_DNS=<your LAN resolver>}" \
+  && case ":$cf:" in *:docker-compose.lan-dns.yml:*) ;; *) cf="$cf:docker-compose.lan-dns.yml";; esac \
+  && t=$(mktemp ./.env.XXXXXX) && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" \
+  && printf 'COMPOSE_FILE=%s\nKYBOOKMARKS_DNS=%s\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' "$cf" "$dns" >> "$t" && mv "$t" .env)
+docker compose up -d --force-recreate
+docker inspect KyBookmarks-Server --format '{{.HostConfig.Dns}}'   # must print the resolver you chose
+```
+
+Turning it off: remove the resolver and the flag, strip only `docker-compose.lan-dns.yml` from
+`COMPOSE_FILE` (a build overlay or local override in the chain survives), and recreate:
+
+```bash
+(umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env \
+  && cf=$({ grep '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2- | tr ':' '\n' | grep -vx docker-compose.lan-dns.yml | paste -sd: -) \
+  && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" \
+  && { [ -z "$cf" ] || [ "$cf" = docker-compose.yml ] || printf 'COMPOSE_FILE=%s\n' "$cf" >> "$t"; } && mv "$t" .env)
+docker compose up -d --force-recreate
 ```
 
 **Schedule.** Off, or 15 minutes to a year, set in the Backup tab. The loop polls the setting
