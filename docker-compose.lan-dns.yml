@@ -8,9 +8,11 @@
 # The flag persists in .env on its own: undo with the README's revert, not by editing this line.
 #   (umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env \
 #     && cf=$({ grep '^COMPOSE_FILE=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2-) && cf=${cf:-docker-compose.yml} \
+#     && dns=$({ grep '^KYBOOKMARKS_DNS=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2-) && dns=${dns:-192.168.1.1} \
+  && dns=$({ grep '^KYBOOKMARKS_DNS=' .env || [ $? -eq 1 ]; } | tail -n1 | cut -d= -f2-) && dns=${dns:-192.168.1.1} \
 #     && case ":$cf:" in *:docker-compose.lan-dns.yml:*) ;; *) cf="$cf:docker-compose.lan-dns.yml";; esac \
 #     && { grep -v -e '^COMPOSE_FILE=' -e '^KYBOOKMARKS_DNS=' -e '^KYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=' .env || [ $? -eq 1 ]; } > "$t" \
-#     && printf 'COMPOSE_FILE=%s\nKYBOOKMARKS_DNS=192.168.1.1\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' "$cf" >> "$t" && mv "$t" .env)
+#     && printf 'COMPOSE_FILE=%s\nKYBOOKMARKS_DNS=%s\nKYBOOKMARKS_BACKUP_ALLOW_PRIVATE_RECOVERY=true\n' "$cf" "$dns" >> "$t" && mv "$t" .env)
 #   docker compose up -d --force-recreate
 services:
   kybookmarks-server:
