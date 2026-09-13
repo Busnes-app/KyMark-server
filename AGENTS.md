@@ -178,6 +178,7 @@ Pairing, key pin, schedule, local copies, deposit, drill mechanics and restore a
 - **Backend Unit & Integration Tests**: `go test -v ./...`
 - **Frontend Production Build**: `cd frontend && npm run build`
 - **Docker Production Image**: `docker build -t kybookmarks-server:latest .`
+- On a push to the default branch that passes every job, the `publish` job pushes the image to `ghcr.io/busness-app/<repo>` as `:latest` and `:<commit sha>`; `docker-compose.yml` names that image.
 - **Audit Ablation Suite**: `python3 scripts/ablate.py`
 - **Backup export regression**: `go test ./internal/api -run 'TestExportCapsule'`
 
