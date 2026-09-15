@@ -45,9 +45,9 @@ far as the server is concerned: accounts, session tokens, the audit chain and it
 ## Before you start
 
 - **Pick the capsule.** In the KyRecovery dashboard, open Capsules, find the newest one for
-  service `KyMark` that is not flagged corrupt, and note its `capsule_id`, `created_at`
+  service `KyBookmarks` that is not flagged corrupt, and note its `capsule_id`, `created_at`
   and `digest`. Download it with an operator session. From a local backup directory
-  (`KYMARK_BACKUP_DIR`), the file is `KyMark.<capsule-id>.kycap`; the newest is the
+  (`KYMARK_BACKUP_DIR`), the file is `KyBookmarks.<capsule-id>.kycap`; the newest is the
   one to use unless you have a reason.
 - **Gather k custodians.** Each card carries one share, a single line. They type or paste it
   themselves; do not collect the shares in a file, a chat, or an email. Two shares in one
@@ -60,7 +60,7 @@ far as the server is concerned: accounts, session tokens, the audit chain and it
 With the binary (from a release, or `go build ./cmd/server`):
 
 ```bash
-kymark-server restore -capsule KyMark.cap-KyMark-XXXXXXXX.kycap -to ./restored
+kymark-server restore -capsule KyBookmarks.cap-KyBookmarks-XXXXXXXX.kycap -to ./restored
 ```
 
 For a published-image install, and always on a fresh recovery machine, pin the commit you
@@ -104,7 +104,7 @@ by you, not by root and not by the image's user. `--no-deps` keeps the real serv
 ```bash
 mkdir -m 700 restored
 docker compose run --rm --no-deps --user "$(id -u):$(id -g)" \
-  -v "$PWD/KyMark.cap-KyMark-XXXXXXXX.kycap:/in.kycap:ro" \
+  -v "$PWD/KyBookmarks.cap-KyBookmarks-XXXXXXXX.kycap:/in.kycap:ro" \
   -v "$PWD/restored:/restored" \
   kymark-server restore -capsule /in.kycap -to /restored
 ```
@@ -118,8 +118,8 @@ Delete it afterwards; a file holding k shares is the suite key in a file.
 On success it prints the authenticated manifest:
 
 ```
-Restored 8 files from capsule cap-KyMark-1788604943344953387
-  service:      KyMark (v0.2.0)
+Restored 8 files from capsule cap-KyBookmarks-1788604943344953387
+  service:      KyBookmarks (v0.2.0)
   created:      2026-09-05T10:42:23Z
   recovery key: 51e2d2e1...
   payload hash: 28db3b8d...
@@ -134,7 +134,7 @@ Failures you may see, and what they mean:
 
 | Message | Meaning |
 |---|---|
-| `capsule is for service "KyMark", this instance is "X"` | You passed `-service` as something else. Only override it if the backup was made under a different name |
+| `capsule is for service "KyBookmarks", this instance is "X"` | You passed `-service` as something else. Only override it if the backup was made under a different name |
 | `shamir: fewer shares than the threshold requires: got 1` | Fewer than k valid lines were read. Check for a missed line or a truncated paste |
 | `restore target directory is not empty` | Use an empty directory. The restore never overwrites |
 | a decrypt or integrity error | Wrong shares (from a different ceremony), a share mistyped, or a damaged file. Re-download and retry with the custodians |
@@ -150,7 +150,8 @@ the backup was made with and where each file goes.
 
 ## Step 3: put it in service
 
-Two volumes: `kymark_data` (`/app/data`) and `kymark_config` (`/app/config`). Both
+Two volumes: `kybookmarks-server_kybookmarks_data` (`/app/data`) and
+`kybookmarks-server_kybookmarks_config` (`/app/config`). Both
 must be empty before the copy, for the same reason Step 1 demands an empty directory. A
 capsule carries `kybookmarks.db` but never its `-wal` and `-shm` sidecars; a write-ahead log
 left over from the old database would be replayed into the restored one at first open,
@@ -158,6 +159,7 @@ mixing two databases. A leftover `audit.state` would describe a log that no long
 
 ```bash
 docker compose down
+docker volume ls --format '{{.Name}}' | grep -E '^(kybookmarks-server_)?kybookmarks_(data|config)$'
 docker compose run --rm --no-deps --entrypoint sh kymark-server -c 'find /app/data /app/config -mindepth 1 | wc -l'
 ```
 

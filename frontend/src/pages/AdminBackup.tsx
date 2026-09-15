@@ -189,7 +189,7 @@ export const AdminBackup: React.FC = () => {
   const downloadCapsule = async () => {
     setRunError('');
     try {
-      const { blob, filename } = await postBlob('/api/admin/backup/export-capsule', 'KyMark.kycap');
+      const { blob, filename } = await postBlob('/api/admin/backup/export-capsule', 'KyBookmarks.kycap');
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;

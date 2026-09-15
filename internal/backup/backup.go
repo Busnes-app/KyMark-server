@@ -17,8 +17,8 @@ import (
 	"github.com/Busness-app/kymark-server/internal/store"
 )
 
-// AppName is the service name KyRecovery pins at pairing; every capsule must carry it.
-const AppName = "KyMark"
+// AppName is the wire identity KyRecovery pins at pairing; keep it stable across branding changes.
+const AppName = "KyBookmarks"
 
 const tokenLabel = "kybookmarks:setting:kyrecovery_token"
 

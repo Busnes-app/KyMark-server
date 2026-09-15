@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getJSON, postJSON } from './lib/api';
 import { exportVaultKeyRaw, importVaultKeyRaw } from './lib/crypto';
-import { getDeviceVaultKey, storeDeviceVaultKey, clearDeviceVaultKey } from './lib/storage';
+import { getDeviceVaultKey, storeDeviceVaultKey, clearDeviceVaultKey, migrateLegacyDeviceVault } from './lib/storage';
 import { LoginPage } from './pages/LoginPage';
 import { BookmarksPage } from './pages/BookmarksPage';
 import { SecuritySettings } from './pages/SecuritySettings';
@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 
 const SESSION_KEY_NAME = 'kymark_vault_session_key';
+const LEGACY_SESSION_KEY_NAME = 'kybookmarks_vault_session_key';
 
 export const App: React.FC = () => {
   const [user, setUser] = useState<any | null>(null);
@@ -29,7 +30,12 @@ export const App: React.FC = () => {
   const [reconciliationConflicts, setReconciliationConflicts] = useState<any[] | null>(null);
 
   useEffect(() => {
-    checkAuth();
+    const initialize = async () => {
+      await migrateLegacyDeviceVault().catch(() => undefined);
+      sessionStorage.removeItem(LEGACY_SESSION_KEY_NAME);
+      await checkAuth();
+    };
+    initialize();
   }, []);
 
   const checkAuth = async () => {
@@ -88,6 +94,7 @@ export const App: React.FC = () => {
     if (user?.username) {
       await clearDeviceVaultKey(user.username);
     }
+    sessionStorage.removeItem(LEGACY_SESSION_KEY_NAME);
     await handleLogout();
   };
 

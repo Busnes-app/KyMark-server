@@ -145,11 +145,12 @@ must never trust a caller-supplied user ID without that binding.
 `internal/backup` holds only what is this product's: `Collect` (SQLite `VACUUM INTO` through
 the live handle, the four `CONFIG_DIR` keys, `sso.json`, `recovery.pub`, the audit log, a
 manifest), the drill `Checks`, the `Settings` adapter over the `settings` table, the `Sealer`
-under `deployment.key` (label `kymark:setting:kyrecovery_token`), and `AuditDetails`.
+under `deployment.key` (label `kybookmarks:setting:kyrecovery_token`; frozen for compatibility,
+not a branding identifier), and `AuditDetails`.
 Pairing, key pin, schedule, local copies, deposit, drill mechanics and restore are
 `ky-primitives/recoveryclient`; do not reimplement any of them here.
 
-- Service name is `backup.AppName` (`KyMark`) everywhere: the pairing claim, every
+- Service name is `backup.AppName` (`KyBookmarks`) everywhere: the pairing claim, every
   manifest, local copy names.
 - **Step-up:** this product has none. Admin role plus CSRF (`withAdmin`) is the equivalent for
   every `/api/admin/backup/*` route; `TestBackupRoutesRequireAdmin` pins it.
