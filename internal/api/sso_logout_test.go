@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Busness-app/kybookmarks-server/internal/sso/ssotest"
-	"github.com/Busness-app/kybookmarks-server/internal/store"
+	"github.com/Busness-app/kymark-server/internal/sso/ssotest"
+	"github.com/Busness-app/kymark-server/internal/store"
 )
 
 // ssoLogin signs the account in through the callback and returns its session cookie.
@@ -36,7 +36,7 @@ func logoutToken(t *testing.T, key *rsa.PrivateKey, issuer string, over map[stri
 	t.Helper()
 	now := time.Now().Unix()
 	full := map[string]any{
-		"iss": issuer, "aud": "kybookmarks", "iat": now, "exp": now + 120,
+		"iss": issuer, "aud": "kymark", "iat": now, "exp": now + 120,
 		"jti":    "jti-" + strings.ReplaceAll(time.Now().Format("150405.000000000"), ".", ""),
 		"events": map[string]any{"http://schemas.openid.net/event/backchannel-logout": map[string]any{}},
 	}

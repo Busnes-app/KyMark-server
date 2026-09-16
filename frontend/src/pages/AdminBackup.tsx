@@ -319,7 +319,7 @@ export const AdminBackup: React.FC = () => {
       {status && keyPinned && !paired && !hasLocal && (
         <div className="alert alert-warning">
           <AlertCircle size={16} />{' '}
-          <span>A key is pinned but capsules have nowhere to go. Pair with KyRecovery, or set KYBOOKMARKS_BACKUP_DIR to keep copies on this host.</span>
+          <span>A key is pinned but capsules have nowhere to go. Pair with KyRecovery, or set KYMARK_BACKUP_DIR to keep copies on this host.</span>
         </div>
       )}
       {status && keyPinned && !scheduleOn && (
@@ -354,7 +354,7 @@ export const AdminBackup: React.FC = () => {
             <span>Local copies</span>
             <Badge tone={hasLocal ? 'ok' : 'off'}>{hasLocal ? `${copies.length} of ${status?.local_keep}` : 'Off'}</Badge>
           </div>
-          <div className="dr-fact-value dr-mono">{status?.local_dir ?? 'KYBOOKMARKS_BACKUP_DIR not set'}</div>
+          <div className="dr-fact-value dr-mono">{status?.local_dir ?? 'KYMARK_BACKUP_DIR not set'}</div>
           <div className="dr-fact-note">{status?.local_error ?? (newestLocal ? `Newest ${when(newestLocal.created_at)}` : hasLocal ? 'Nothing written yet' : '')}</div>
         </div>
         <div className="dr-fact">

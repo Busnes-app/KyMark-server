@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getJSON, postJSON } from './lib/api';
 import { exportVaultKeyRaw, importVaultKeyRaw } from './lib/crypto';
-import { getDeviceVaultKey, storeDeviceVaultKey, clearDeviceVaultKey } from './lib/storage';
+import { getDeviceVaultKey, storeDeviceVaultKey, clearDeviceVaultKey, migrateLegacyDeviceVault } from './lib/storage';
 import { LoginPage } from './pages/LoginPage';
 import { BookmarksPage } from './pages/BookmarksPage';
 import { SecuritySettings } from './pages/SecuritySettings';
@@ -16,7 +16,8 @@ import {
   Key,
 } from 'lucide-react';
 
-const SESSION_KEY_NAME = 'kybookmarks_vault_session_key';
+const SESSION_KEY_NAME = 'kymark_vault_session_key';
+const LEGACY_SESSION_KEY_NAME = 'kybookmarks_vault_session_key';
 
 export const App: React.FC = () => {
   const [user, setUser] = useState<any | null>(null);
@@ -29,7 +30,12 @@ export const App: React.FC = () => {
   const [reconciliationConflicts, setReconciliationConflicts] = useState<any[] | null>(null);
 
   useEffect(() => {
-    checkAuth();
+    const initialize = async () => {
+      await migrateLegacyDeviceVault().catch(() => undefined);
+      sessionStorage.removeItem(LEGACY_SESSION_KEY_NAME);
+      await checkAuth();
+    };
+    initialize();
   }, []);
 
   const checkAuth = async () => {
@@ -85,17 +91,19 @@ export const App: React.FC = () => {
   };
 
   const handleForgetDevice = async () => {
-    if (user?.username) {
-      await clearDeviceVaultKey(user.username);
-    }
+    const username = user?.username;
+    sessionStorage.removeItem(LEGACY_SESSION_KEY_NAME);
     await handleLogout();
+    if (username) {
+      await clearDeviceVaultKey(username).catch(() => undefined);
+    }
   };
 
   if (loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-primary)', color: 'var(--cyan)' }}>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', letterSpacing: '0.1em' }}>
-          LOADING KYBOOKMARKS...
+          LOADING KYMARK...
         </div>
       </div>
     );
@@ -117,8 +125,8 @@ export const App: React.FC = () => {
       {/* Navbar */}
       <nav className="navbar">
         <div className="nav-brand">
-          <img src="/KyBookmarks.png" alt="KyBookmarks" style={{ width: '28px', height: '28px', borderRadius: '6px' }} />
-          <span>KyBookmarks</span>
+          <img src="/KyMark.png" alt="KyMark" style={{ width: '28px', height: '28px', borderRadius: '6px' }} />
+          <span>KyMark</span>
           <span className="brand-badge">E2EE ZERO-KNOWLEDGE</span>
         </div>
 

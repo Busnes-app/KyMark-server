@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Busness-app/kybookmarks-server/internal/sso"
-	"github.com/Busness-app/kybookmarks-server/internal/sso/ssotest"
+	"github.com/Busness-app/kymark-server/internal/sso"
+	"github.com/Busness-app/kymark-server/internal/sso/ssotest"
 )
 
 // stubIdP serves just enough OIDC for the callback: discovery, a JWKS, and a token
@@ -42,7 +42,7 @@ func stubIssuer(t *testing.T, claims map[string]any) (*httptest.Server, *rsa.Pri
 	mux.HandleFunc("/.well-known/jwks.json", ssotest.JWKS(key))
 	mux.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
 		now := time.Now().Unix()
-		full := map[string]any{"iss": srv.URL, "aud": "kybookmarks", "nonce": "testnonce", "iat": now, "exp": now + 300, "sid": "sid-1"}
+		full := map[string]any{"iss": srv.URL, "aud": "kymark", "nonce": "testnonce", "iat": now, "exp": now + 300, "sid": "sid-1"}
 		for k, v := range claims {
 			full[k] = v
 		}
@@ -66,7 +66,7 @@ func ssoCallbackWithCookie(t *testing.T, srv *Server, handler http.Handler, idp 
 	if err := srv.ssoStore.Save(sso.SSOSettings{
 		Enabled:       true,
 		IssuerURL:     idp.URL,
-		ClientID:      "kybookmarks",
+		ClientID:      "kymark",
 		AutoProvision: false,
 	}); err != nil {
 		t.Fatal(err)

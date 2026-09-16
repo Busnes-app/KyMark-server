@@ -1,4 +1,4 @@
-// Package backup is what is specific to KyBookmarks in the suite's backup contract: what a
+// Package backup is what is specific to KyMark in the suite's backup contract: what a
 // capsule carries, how the drill judges a restore, and the adapters that bind this store
 // and this deployment key to ky-primitives/recoveryclient. Pairing, key pin, schedule,
 // local copies, deposit, drill mechanics and restore are the lib's.
@@ -14,10 +14,10 @@ import (
 
 	"github.com/Busness-app/ky-primitives/recoveryclient"
 
-	"github.com/Busness-app/kybookmarks-server/internal/store"
+	"github.com/Busness-app/kymark-server/internal/store"
 )
 
-// AppName is the service name KyRecovery pins at pairing; every capsule must carry it.
+// AppName is the wire identity KyRecovery pins at pairing; keep it stable across branding changes.
 const AppName = "KyBookmarks"
 
 const tokenLabel = "kybookmarks:setting:kyrecovery_token"
