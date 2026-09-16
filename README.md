@@ -37,6 +37,10 @@ docker compose pull && docker compose up -d
 A digest-pinned install (`KYMARK_IMAGE` in `.env`) gets nothing from `pull`: re-run the pin recipe in
 `docker-compose.yml` with the commit sha you want first, or delete that line to follow `:latest` again.
 
+When upgrading from KyBookmarks, rename any `KYBOOKMARKS_*` settings in `.env` to their `KYMARK_*`
+names. Compose accepts the legacy names as a transition fallback; direct server runs refuse legacy
+backup variables until they are renamed, so a backup cannot silently stop.
+
 Open `http://127.0.0.1:5869` and complete first-run setup. Every variable below has a default
 except `SYNC_SECRET`, which has none on purpose.
 

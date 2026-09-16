@@ -23,17 +23,22 @@ function deleteDatabase(name: string): Promise<void> {
     const request = indexedDB.deleteDatabase(name);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error ?? new Error('Unable to delete local key store'));
+    request.onblocked = () => reject(new Error('Local key store deletion blocked'));
   });
 }
 
 export async function migrateLegacyDeviceVault(): Promise<void> {
   const legacy = await openDatabase(LEGACY_DB_NAME);
-  const entries = await new Promise<Array<{ username: string; rawKey: string; updatedAt?: string }>>((resolve, reject) => {
-    const request = legacy.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll();
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
-  legacy.close();
+  let entries: Array<{ username: string; rawKey: string; updatedAt?: string }>;
+  try {
+    entries = await new Promise<Array<{ username: string; rawKey: string; updatedAt?: string }>>((resolve, reject) => {
+      const request = legacy.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll();
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  } finally {
+    legacy.close();
+  }
 
   if (entries.length > 0) {
     const current = await openDatabase();

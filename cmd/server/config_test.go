@@ -31,3 +31,11 @@ func TestBackupConfigRefusesKeepBelowOneAndShortInterval(t *testing.T) {
 		t.Fatalf("5m interval: %v", err)
 	}
 }
+
+func TestBackupConfigRefusesLegacyEnv(t *testing.T) {
+	t.Setenv("KYMARK_BACKUP_DIR", "")
+	t.Setenv("KYBOOKMARKS_BACKUP_DIR", "/tmp/legacy")
+	if _, err := loadBackupConfig(); err == nil || !strings.Contains(err.Error(), "KYMARK_BACKUP_DIR") {
+		t.Fatalf("legacy backup env: %v", err)
+	}
+}

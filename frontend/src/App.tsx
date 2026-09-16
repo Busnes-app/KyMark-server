@@ -91,11 +91,12 @@ export const App: React.FC = () => {
   };
 
   const handleForgetDevice = async () => {
-    if (user?.username) {
-      await clearDeviceVaultKey(user.username);
-    }
+    const username = user?.username;
     sessionStorage.removeItem(LEGACY_SESSION_KEY_NAME);
     await handleLogout();
+    if (username) {
+      await clearDeviceVaultKey(username).catch(() => undefined);
+    }
   };
 
   if (loading) {

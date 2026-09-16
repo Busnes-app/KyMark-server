@@ -31,15 +31,31 @@ const appVersion = "0.2.0"
 // loadBackupConfig reads the KYMARK_BACKUP_* variables. Keep below one and an
 // interval under the lib's floor are refused here, at startup, not at the first backup.
 func loadBackupConfig() (api.BackupConfig, error) {
-	cfg := api.BackupConfig{Dir: os.Getenv("KYMARK_BACKUP_DIR"), Keep: 7, DepositInterval: 24 * time.Hour}
-	if v := os.Getenv("KYMARK_BACKUP_KEEP"); v != "" {
+	dir, err := renamedBackupEnv("KYMARK_BACKUP_DIR")
+	if err != nil {
+		return api.BackupConfig{}, err
+	}
+	keep, err := renamedBackupEnv("KYMARK_BACKUP_KEEP")
+	if err != nil {
+		return api.BackupConfig{}, err
+	}
+	interval, err := renamedBackupEnv("KYMARK_BACKUP_DEPOSIT_INTERVAL")
+	if err != nil {
+		return api.BackupConfig{}, err
+	}
+	privateRecovery, err := renamedBackupEnv("KYMARK_BACKUP_ALLOW_PRIVATE_RECOVERY")
+	if err != nil {
+		return api.BackupConfig{}, err
+	}
+	cfg := api.BackupConfig{Dir: dir, Keep: 7, DepositInterval: 24 * time.Hour}
+	if v := keep; v != "" {
 		n, err := strconv.Atoi(v)
 		if err != nil || n < 1 {
 			return cfg, fmt.Errorf("KYMARK_BACKUP_KEEP: must be an integer of at least 1, got %q", v)
 		}
 		cfg.Keep = n
 	}
-	if v := os.Getenv("KYMARK_BACKUP_DEPOSIT_INTERVAL"); v != "" {
+	if v := interval; v != "" {
 		d, err := time.ParseDuration(v)
 		if err != nil {
 			return cfg, fmt.Errorf("KYMARK_BACKUP_DEPOSIT_INTERVAL: %w", err)
@@ -49,8 +65,17 @@ func loadBackupConfig() (api.BackupConfig, error) {
 		}
 		cfg.DepositInterval = d
 	}
-	cfg.AllowPrivateRecovery = strings.EqualFold(os.Getenv("KYMARK_BACKUP_ALLOW_PRIVATE_RECOVERY"), "true")
+	cfg.AllowPrivateRecovery = strings.EqualFold(privateRecovery, "true")
 	return cfg, nil
+}
+
+func renamedBackupEnv(name string) (string, error) {
+	value := os.Getenv(name)
+	legacy := strings.Replace(name, "KYMARK_", "KYBOOKMARKS_", 1)
+	if value == "" && os.Getenv(legacy) != "" {
+		return "", fmt.Errorf("%s is deprecated; set %s instead", legacy, name)
+	}
+	return value, nil
 }
 
 // env is what every subcommand reads from the environment.
