@@ -8,7 +8,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"github.com/Busness-app/ky-primitives/capsule"
+	"github.com/Busnes-app/ky-primitives/capsule"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -17,9 +17,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Busness-app/ky-primitives/keyfile"
-	"github.com/Busness-app/ky-primitives/recoveryclient"
-	"github.com/Busness-app/ky-primitives/recoverykey"
+	"github.com/Busnes-app/ky-primitives/keyfile"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/recoverykey"
 
 	"github.com/Busnes-app/kymark-server/internal/backup"
 )

@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Busness-app/ky-primitives/recoveryclient"
-	"github.com/Busness-app/ky-primitives/syncauth"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/syncauth"
 
 	"github.com/Busnes-app/kymark-server/internal/crypto"
 	"github.com/Busnes-app/kymark-server/internal/sso"

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Busness-app/ky-primitives/keyfile"
+	"github.com/Busnes-app/ky-primitives/keyfile"
 
 	"github.com/Busnes-app/kymark-server/internal/store"
 )

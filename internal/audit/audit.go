@@ -14,8 +14,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Busness-app/ky-primitives/auditchain"
-	"github.com/Busness-app/ky-primitives/keyfile"
+	"github.com/Busnes-app/ky-primitives/auditchain"
+	"github.com/Busnes-app/ky-primitives/keyfile"
 
 	"github.com/google/uuid"
 )

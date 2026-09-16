@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Busness-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
 
 	"github.com/Busnes-app/kymark-server/internal/store"
 )

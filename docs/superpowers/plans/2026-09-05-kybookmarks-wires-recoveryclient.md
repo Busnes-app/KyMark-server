@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Bring kybookmarks-server to the KySignOn backup spec by wiring `github.com/Busness-app/ky-primitives/recoveryclient`: pin or pair, seal, local copies, schedule, deposit, drill, restore, screen, runbook.
+**Goal:** Bring kybookmarks-server to the KySignOn backup spec by wiring `github.com/Busnes-app/ky-primitives/recoveryclient`: pin or pair, seal, local copies, schedule, deposit, drill, restore, screen, runbook.
 
 **Architecture:** A new `internal/backup` package holds only what is product-specific: a `Settings` adapter over a new `settings` table, a `Sealer` under a new deployment key minted by `keyfile`, `Collect` (SQLite `VACUUM INTO` through the live handle plus every key and config file a restore needs), and the drill's checks. `internal/api/backup_handlers.go` maps the lib onto eight admin routes. `cmd/server/main.go` gains a subcommand dispatcher, a minute-polling backup loop, and a ten-line `restore`. The admin panel gets a Backup tab ported from kysignon.
 
@@ -438,7 +438,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Busness-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
 	"github.com/Busnes-app/kybookmarks-server/internal/store"
 )
 
@@ -508,7 +508,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Busness-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
 	"github.com/Busnes-app/kybookmarks-server/internal/store"
 )
 
@@ -609,7 +609,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Busness-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
 )
 
 // Checks judge an opened capsule: every member present, the database passes integrity_check,
@@ -1042,7 +1042,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Busness-app/ky-primitives/recoveryclient/guardtest"
+	"github.com/Busnes-app/ky-primitives/recoveryclient/guardtest"
 )
 
 func TestNothingInTheServerDecrypts(t *testing.T) {

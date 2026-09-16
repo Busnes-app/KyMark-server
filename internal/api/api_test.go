@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Busness-app/ky-primitives/syncauth"
+	"github.com/Busnes-app/ky-primitives/syncauth"
 
 	"github.com/Busnes-app/kymark-server/internal/audit"
 	"github.com/Busnes-app/kymark-server/internal/devices"
