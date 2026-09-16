@@ -18,10 +18,10 @@ services:
     # again. A source install is unaffected: the build overlay's image wins over this pin.
     #   sha=<full commit sha you intend to run, e.g. $(git rev-parse origin/master)>
     #   d=$(docker buildx imagetools inspect ghcr.io/busnes-app/kymark-server:$sha --format '{{.Manifest.Digest}}') \
-    #     && gh attestation verify "oci://ghcr.io/busnes-app/kymark-server@$d" --repo Busnes-app/kymark-server \
-    #          --cert-identity https://github.com/Busnes-app/kymark-server/.github/workflows/ci.yml@refs/heads/master \
-    #     && [ "$(gh attestation verify "oci://ghcr.io/busnes-app/kymark-server@$d" --repo Busnes-app/kymark-server \
-    #          --cert-identity https://github.com/Busnes-app/kymark-server/.github/workflows/ci.yml@refs/heads/master \
+    #     && gh attestation verify "oci://ghcr.io/busnes-app/kymark-server@$d" --repo Busnes-app/KyMark-server \
+    #          --cert-identity https://github.com/Busnes-app/KyMark-server/.github/workflows/ci.yml@refs/heads/master \
+    #     && [ "$(gh attestation verify "oci://ghcr.io/busnes-app/kymark-server@$d" --repo Busnes-app/KyMark-server \
+    #          --cert-identity https://github.com/Busnes-app/KyMark-server/.github/workflows/ci.yml@refs/heads/master \
     #          --format json --jq '.[0].verificationResult.statement.predicate.buildDefinition.resolvedDependencies[0].digest.gitCommit')" = "$sha" ] \
     #     && (umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v '^KYMARK_IMAGE=' .env || [ $? -eq 1 ]; } > "$t" \
     #         && echo "KYMARK_IMAGE=ghcr.io/busnes-app/kymark-server@$d" >> "$t" && mv "$t" .env) \
