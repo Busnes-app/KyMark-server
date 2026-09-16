@@ -1,4 +1,4 @@
-module github.com/Busness-app/kymark-server
+module github.com/Busnes-app/kymark-server
 
 go 1.26.6
 

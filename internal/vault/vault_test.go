@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Busness-app/kymark-server/internal/store"
+	"github.com/Busnes-app/kymark-server/internal/store"
 )
 
 func TestVaultSyncAndCAS(t *testing.T) {

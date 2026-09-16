@@ -21,13 +21,13 @@ import (
 	"github.com/Busness-app/ky-primitives/recoveryclient"
 	"github.com/Busness-app/ky-primitives/syncauth"
 
-	"github.com/Busness-app/kymark-server/internal/audit"
-	"github.com/Busness-app/kymark-server/internal/backup"
-	"github.com/Busness-app/kymark-server/internal/crypto"
-	"github.com/Busness-app/kymark-server/internal/devices"
-	"github.com/Busness-app/kymark-server/internal/sso"
-	"github.com/Busness-app/kymark-server/internal/store"
-	"github.com/Busness-app/kymark-server/internal/vault"
+	"github.com/Busnes-app/kymark-server/internal/audit"
+	"github.com/Busnes-app/kymark-server/internal/backup"
+	"github.com/Busnes-app/kymark-server/internal/crypto"
+	"github.com/Busnes-app/kymark-server/internal/devices"
+	"github.com/Busnes-app/kymark-server/internal/sso"
+	"github.com/Busnes-app/kymark-server/internal/store"
+	"github.com/Busnes-app/kymark-server/internal/vault"
 )
 
 const (

@@ -14,7 +14,7 @@ import (
 
 	"github.com/Busness-app/ky-primitives/recoveryclient"
 
-	"github.com/Busness-app/kymark-server/internal/store"
+	"github.com/Busnes-app/kymark-server/internal/store"
 )
 
 // AppName is the wire identity KyRecovery pins at pairing; keep it stable across branding changes.

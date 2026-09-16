@@ -1,6 +1,6 @@
 **Repo:** kybookmarks-server
-**PR:** #18 — https://github.com/Busness-app/kybookmarks-server/pull/18 (merged auth baseline)
-**PR:** #19 — https://github.com/Busness-app/kybookmarks-server/pull/19 (merged backup baseline; no new PR)
+**PR:** #18 — https://github.com/Busnes-app/kybookmarks-server/pull/18 (merged auth baseline)
+**PR:** #19 — https://github.com/Busnes-app/kybookmarks-server/pull/19 (merged backup baseline; no new PR)
 **Worktree:** /home/yoshi/busness.app/kybookmarks-server (master; planning from fetched origin/master 95852bb1db6f3ae54ad6008799c3a2968f180e28)
 
 # Post 291: v0.5.1 drill migration and recovery proof

@@ -439,7 +439,7 @@ import (
 	"strings"
 
 	"github.com/Busness-app/ky-primitives/recoveryclient"
-	"github.com/Busness-app/kybookmarks-server/internal/store"
+	"github.com/Busnes-app/kybookmarks-server/internal/store"
 )
 
 // AppName is the service name KyRecovery pins at pairing; every capsule must carry it.
@@ -509,7 +509,7 @@ import (
 	"path/filepath"
 
 	"github.com/Busness-app/ky-primitives/recoveryclient"
-	"github.com/Busness-app/kybookmarks-server/internal/store"
+	"github.com/Busnes-app/kybookmarks-server/internal/store"
 )
 
 const (

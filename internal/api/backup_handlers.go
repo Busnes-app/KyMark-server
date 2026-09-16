@@ -17,8 +17,8 @@ import (
 	"github.com/Busness-app/ky-primitives/recoveryclient"
 	"github.com/Busness-app/ky-primitives/recoverykey"
 
-	"github.com/Busness-app/kymark-server/internal/audit"
-	"github.com/Busness-app/kymark-server/internal/backup"
+	"github.com/Busnes-app/kymark-server/internal/audit"
+	"github.com/Busnes-app/kymark-server/internal/backup"
 )
 
 // recoveryClient is the slice of the KyRecovery client the handlers use; tests stand in a

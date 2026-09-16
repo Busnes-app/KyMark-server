@@ -21,7 +21,7 @@ import (
 	"github.com/Busness-app/ky-primitives/recoveryclient"
 	"github.com/Busness-app/ky-primitives/recoverykey"
 
-	"github.com/Busness-app/kymark-server/internal/backup"
+	"github.com/Busnes-app/kymark-server/internal/backup"
 )
 
 type fakeRecovery struct {
