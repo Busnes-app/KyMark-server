@@ -145,3 +145,7 @@ files stay under `DATA_DIR/drill` (0700) and are removed on return; the `.lock` 
 
 **Command line.** `kymark-server backup-drill`, `export-capsule <out>`, `deposit`, and
 `restore -capsule <file> -to <dir>` (shares on stdin). `serve` is the default.
+
+## Upgrading from ghcr.io/busness-app
+
+The image namespace moved from `ghcr.io/busness-app` to `ghcr.io/busnes-app` on 2026-09-16 when the GitHub organisation was renamed. `:latest` under the old namespace is no longer published and GHCR does not redirect it. Re-pin any `KYMARK_IMAGE` that names the old namespace, using the digest procedure in `docs/RESTORE.md`, then `docker compose pull`.
