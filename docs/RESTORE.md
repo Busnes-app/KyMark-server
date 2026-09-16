@@ -70,15 +70,15 @@ Tags are movable, `:<commit sha>` included, so the chain also checks that the at
 your commit as its source: the guarantee is the commit you named, not whatever the tag points at. The
 chain stops at the first failure and renames a same-directory staging file over `.env` only
 if the filtered copy was written in full, so your secrets are never truncated. The pin persists
-in `.env` after the drill: see the README's upgrade note for moving off it.
+in `.env` after the drill: see the README's upgrade note for moving off it. Commits built before 2026-09-16 were attested under the previous organisation name, so verify those with the exact `--repo` and `--cert-identity` strings that were in effect when they were built (owner `Busness-app`); keep the exact match rather than switching to `--cert-identity-regex`.
 
 ```bash
 sha=<full commit sha you intend to run, e.g. $(git rev-parse origin/master)>
 d=$(docker buildx imagetools inspect ghcr.io/busnes-app/kymark-server:$sha --format '{{.Manifest.Digest}}') \
-  && gh attestation verify "oci://ghcr.io/busnes-app/kymark-server@$d" --repo Busnes-app/kymark-server \
-       --cert-identity https://github.com/Busnes-app/kymark-server/.github/workflows/ci.yml@refs/heads/master \
-  && [ "$(gh attestation verify "oci://ghcr.io/busnes-app/kymark-server@$d" --repo Busnes-app/kymark-server \
-       --cert-identity https://github.com/Busnes-app/kymark-server/.github/workflows/ci.yml@refs/heads/master \
+  && gh attestation verify "oci://ghcr.io/busnes-app/kymark-server@$d" --repo Busnes-app/KyMark-server \
+       --cert-identity https://github.com/Busnes-app/KyMark-server/.github/workflows/ci.yml@refs/heads/master \
+  && [ "$(gh attestation verify "oci://ghcr.io/busnes-app/kymark-server@$d" --repo Busnes-app/KyMark-server \
+       --cert-identity https://github.com/Busnes-app/KyMark-server/.github/workflows/ci.yml@refs/heads/master \
        --format json --jq '.[0].verificationResult.statement.predicate.buildDefinition.resolvedDependencies[0].digest.gitCommit')" = "$sha" ] \
   && (umask 077; t=$(mktemp ./.env.XXXXXX) && touch .env && { grep -v '^KYMARK_IMAGE=' .env || [ $? -eq 1 ]; } > "$t" \
       && echo "KYMARK_IMAGE=ghcr.io/busnes-app/kymark-server@$d" >> "$t" && mv "$t" .env) \
