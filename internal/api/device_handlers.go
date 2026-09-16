@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Busness-app/kymark-server/internal/devices"
-	"github.com/Busness-app/kymark-server/internal/store"
+	"github.com/Busnes-app/kymark-server/internal/devices"
+	"github.com/Busnes-app/kymark-server/internal/store"
 )
 
 func (s *Server) handlePairRequest(w http.ResponseWriter, r *http.Request) {

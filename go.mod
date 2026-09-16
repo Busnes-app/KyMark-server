@@ -1,9 +1,9 @@
-module github.com/Busness-app/kymark-server
+module github.com/Busnes-app/kymark-server
 
 go 1.26.6
 
 require (
-	github.com/Busness-app/ky-primitives v0.7.0
+	github.com/Busnes-app/ky-primitives v0.8.0
 	github.com/google/uuid v1.6.0
 	golang.org/x/sys v0.48.0
 	modernc.org/sqlite v1.58.0

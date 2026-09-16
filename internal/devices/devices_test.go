@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Busness-app/kymark-server/internal/store"
+	"github.com/Busnes-app/kymark-server/internal/store"
 )
 
 func TestDevicePairingFlow(t *testing.T) {

@@ -14,11 +14,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Busness-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
 
-	"github.com/Busness-app/kymark-server/internal/crypto"
-	"github.com/Busness-app/kymark-server/internal/sso"
-	"github.com/Busness-app/kymark-server/internal/store"
+	"github.com/Busnes-app/kymark-server/internal/crypto"
+	"github.com/Busnes-app/kymark-server/internal/sso"
+	"github.com/Busnes-app/kymark-server/internal/store"
 )
 
 type LoginRequest struct {

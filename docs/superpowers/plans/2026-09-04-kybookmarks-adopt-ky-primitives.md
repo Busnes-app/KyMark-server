@@ -6,7 +6,7 @@
 
 **Architecture:** `internal/crypto` becomes a two-function adapter over `ky-primitives/password`; the salt argument disappears because PHC hashes carry their own. Both hand-rolled key loaders collapse onto `keyfile`. The paper recovery verifier is hashed server-side and the browser sends the PBKDF2-derived value. The sync webhook sits behind `syncauth.Middleware`; the OIDC callback verifies the ID token with `oidcverify.VerifyWithNonce` against a cached verifier instead of decoding an unsigned payload.
 
-**Tech Stack:** Go 1.26, `github.com/Busness-app/ky-primitives v0.5.0` (`password`, `keyfile`, `syncauth`, `oidcverify`, `auditchain`), React + Vite frontend (no test runner; `npm run build` only), `scripts/ablate.py`.
+**Tech Stack:** Go 1.26, `github.com/Busnes-app/ky-primitives v0.5.0` (`password`, `keyfile`, `syncauth`, `oidcverify`, `auditchain`), React + Vite frontend (no test runner; `npm run build` only), `scripts/ablate.py`.
 
 **Spec:** myslop folders `kybookmarks-kyrecovery-deposit` (posts 154, 176, 187, 194, 197), `ky-primitives-syncauth` (posts 205, 212), `ky-primitives-oidcverify` (posts 206, 213). Library API read from ky-primitives master at 533a053 (PR #12 merged 2026-09-05). The KyRecovery half is a separate plan: `docs/superpowers/plans/2026-09-05-kybookmarks-wires-recoveryclient.md`.
 
@@ -38,7 +38,7 @@
 - [ ] **Step 1: Pin**
 
 ```bash
-go get github.com/Busness-app/ky-primitives@533a053
+go get github.com/Busnes-app/ky-primitives@533a053
 go mod tidy
 ```
 
@@ -111,7 +111,7 @@ Expected: FAIL, "too many arguments in call to HashPassword".
 In `internal/crypto/crypto.go` delete the `Scrypt*` constants, the scrypt import, and both functions. Add:
 
 ```go
-import "github.com/Busness-app/ky-primitives/password"
+import "github.com/Busnes-app/ky-primitives/password"
 
 // HashPassword returns a PHC-encoded Argon2id hash at the suite parameters
 // (RFC 9106 second profile). The hash carries its own salt and cost.
@@ -361,7 +361,7 @@ Expected: FAIL (base64 refused by `decodeKey`).
 - [ ] **Step 3: Replace the audit loader**
 
 ```go
-import "github.com/Busness-app/ky-primitives/keyfile"
+import "github.com/Busnes-app/ky-primitives/keyfile"
 
 // loadOrCreateKey sources the chain key from AUDIT_KEY, else configDir/audit.key,
 // else 32 fresh random bytes persisted 0600. There is deliberately no constant fallback.
@@ -674,7 +674,7 @@ Expected: FAIL, undefined `NewVerifier`.
 Delete `ParseClaims`. Add:
 
 ```go
-import "github.com/Busness-app/ky-primitives/oidcverify"
+import "github.com/Busnes-app/ky-primitives/oidcverify"
 
 // NewVerifier builds a JWKS-backed verifier for one issuer and this client. Callers keep it
 // alive across logins so the JWKS cache and its refresh rate limit do their job.
@@ -861,7 +861,7 @@ git commit -m "docs: drop the v1 pairing spec; record Argon2id, sync and OIDC co
 
 ```bash
 git -C /home/yoshi/busness.app/ky-primitives fetch --tags -q && git -C /home/yoshi/busness.app/ky-primitives tag | grep -x v0.5.0
-go get github.com/Busness-app/ky-primitives@v0.5.0 && go mod tidy
+go get github.com/Busnes-app/ky-primitives@v0.5.0 && go mod tidy
 ```
 
 If the tag is still absent, stop here and post to `ky-primitives-kyrecovery-package` that this PR waits on it.
