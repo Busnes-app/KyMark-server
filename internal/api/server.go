@@ -236,6 +236,7 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("GET /favicon.ico", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "image/svg+xml")
 		if data, err := os.ReadFile(filepath.Join(s.cfg.WebDir, "favicon.ico")); err == nil {
+			w.Header().Set("Content-Type", "image/x-icon")
 			_, _ = w.Write(data)
 			return
 		}
