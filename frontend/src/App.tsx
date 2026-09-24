@@ -1,3 +1,4 @@
+import { ThemeSwitcher } from './components/ThemeSwitcher';
 import React, { useState, useEffect } from 'react';
 import { getJSON, postJSON } from './lib/api';
 import { exportVaultKeyRaw, importVaultKeyRaw } from './lib/crypto';
@@ -159,6 +160,7 @@ export const App: React.FC = () => {
         </div>
 
         <div className="nav-right">
+          <ThemeSwitcher />
           <button
             className="btn btn-secondary btn-sm"
             onClick={() => setShowPairingModal(true)}

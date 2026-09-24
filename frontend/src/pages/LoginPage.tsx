@@ -1,3 +1,4 @@
+import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import React, { useState, useEffect, FormEvent } from 'react';
 import { getJSON, postJSON, toErrorMessage } from '../lib/api';
 import {
@@ -200,12 +201,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ loggedInUser, onLoginSucce
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backgroundColor: 'var(--bg-primary)' }}>
       <div className="modal-card" style={{ maxWidth: '440px', width: '100%' }}>
+        <div className="auth-theme"><ThemeSwitcher /></div>
         <div style={{ padding: '2rem 1.75rem 1rem', textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', marginBottom: '0.75rem' }}>
             <img
               src="/KyMark.png"
               alt="KyMark"
-              style={{ width: '64px', height: '64px', borderRadius: '14px', boxShadow: '0 0 20px rgba(77, 238, 234, 0.35)' }}
+              style={{ width: '64px', height: '64px', borderRadius: '14px' }}
             />
           </div>
           <h1 style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)' }}>KyMark</h1>
