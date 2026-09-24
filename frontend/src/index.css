@@ -591,3 +591,172 @@ a {
 .table tr:hover td {
   background-color: var(--bg-card-hover);
 }
+
+/* Busnes.app light/dark defaults. Existing named palettes remain selectable. */
+:root[data-theme="busnes-light"] {
+  --bg: #f8f6f0;
+  --panel: #ffffff;
+  --ink: #566461;
+  --ink-strong: #182326;
+  --accent: #bf3f18;
+  --accent-soft: #fbf0ec;
+  --line: rgba(24, 35, 38, 0.22);
+  --glow: transparent;
+  --sidebar-start: #f2efe7;
+  --sidebar-end: #f2efe7;
+  --button-text: #ffffff;
+  --panel-hover: #f2efe7;
+  --panel-active: #f2efe7;
+  --ink-muted: #566461;
+  --accent-hover: #bf3f18;
+  --line-focus: #bf3f18;
+  --line-strong: rgba(24, 35, 38, 0.22);
+  --danger: #b42318;
+  --success: #267442;
+  --warning: #875b12;
+  --bg-primary: #f8f6f0;
+  --bg-secondary: #f2efe7;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f2efe7;
+  --border-color: rgba(24, 35, 38, 0.22);
+  --border-focus: #bf3f18;
+  --cyan: #bf3f18;
+  --cyan-dim: #fbf0ec;
+  --cyan-hover: #bf3f18;
+  --text-primary: #182326;
+  --text-secondary: #566461;
+  --text-muted: #66736f;
+  --accent-red: #b42318;
+  --accent-green: #267442;
+  --accent-amber: #875b12;
+  color-scheme: light;
+}
+:root:not([data-theme]) {
+  --bg: #f8f6f0;
+  --panel: #ffffff;
+  --ink: #566461;
+  --ink-strong: #182326;
+  --accent: #bf3f18;
+  --accent-soft: #fbf0ec;
+  --line: rgba(24, 35, 38, 0.22);
+  --glow: transparent;
+  --sidebar-start: #f2efe7;
+  --sidebar-end: #f2efe7;
+  --button-text: #ffffff;
+  --panel-hover: #f2efe7;
+  --panel-active: #f2efe7;
+  --ink-muted: #566461;
+  --accent-hover: #bf3f18;
+  --line-focus: #bf3f18;
+  --line-strong: rgba(24, 35, 38, 0.22);
+  --danger: #b42318;
+  --success: #267442;
+  --warning: #875b12;
+  --bg-primary: #f8f6f0;
+  --bg-secondary: #f2efe7;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f2efe7;
+  --border-color: rgba(24, 35, 38, 0.22);
+  --border-focus: #bf3f18;
+  --cyan: #bf3f18;
+  --cyan-dim: #fbf0ec;
+  --cyan-hover: #bf3f18;
+  --text-primary: #182326;
+  --text-secondary: #566461;
+  --text-muted: #66736f;
+  --accent-red: #b42318;
+  --accent-green: #267442;
+  --accent-amber: #875b12;
+  color-scheme: light;
+}
+:root[data-theme="busnes-dark"] {
+  --bg: #182326;
+  --panel: #1f2b2e;
+  --ink: #b3bcb8;
+  --ink-strong: #f2efe8;
+  --accent: #f5865f;
+  --accent-soft: #2b2622;
+  --line: rgba(242, 239, 232, 0.24);
+  --glow: transparent;
+  --sidebar-start: #1f2b2e;
+  --sidebar-end: #1f2b2e;
+  --button-text: #182326;
+  --panel-hover: #243033;
+  --panel-active: #243033;
+  --ink-muted: #b3bcb8;
+  --accent-hover: #f5865f;
+  --line-focus: #f5865f;
+  --line-strong: rgba(242, 239, 232, 0.24);
+  --danger: #eb9d93;
+  --success: #6fbf8a;
+  --warning: #d8a657;
+  --bg-primary: #182326;
+  --bg-secondary: #1f2b2e;
+  --bg-card: #1f2b2e;
+  --bg-card-hover: #243033;
+  --border-color: rgba(242, 239, 232, 0.24);
+  --border-focus: #f5865f;
+  --cyan: #f5865f;
+  --cyan-dim: #2b2622;
+  --cyan-hover: #f5865f;
+  --text-primary: #f2efe8;
+  --text-secondary: #b3bcb8;
+  --text-muted: #8e9894;
+  --accent-red: #eb9d93;
+  --accent-green: #6fbf8a;
+  --accent-amber: #d8a657;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+:root:not([data-theme]) {
+  --bg: #182326;
+  --panel: #1f2b2e;
+  --ink: #b3bcb8;
+  --ink-strong: #f2efe8;
+  --accent: #f5865f;
+  --accent-soft: #2b2622;
+  --line: rgba(242, 239, 232, 0.24);
+  --glow: transparent;
+  --sidebar-start: #1f2b2e;
+  --sidebar-end: #1f2b2e;
+  --button-text: #182326;
+  --panel-hover: #243033;
+  --panel-active: #243033;
+  --ink-muted: #b3bcb8;
+  --accent-hover: #f5865f;
+  --line-focus: #f5865f;
+  --line-strong: rgba(242, 239, 232, 0.24);
+  --danger: #eb9d93;
+  --success: #6fbf8a;
+  --warning: #d8a657;
+  --bg-primary: #182326;
+  --bg-secondary: #1f2b2e;
+  --bg-card: #1f2b2e;
+  --bg-card-hover: #243033;
+  --border-color: rgba(242, 239, 232, 0.24);
+  --border-focus: #f5865f;
+  --cyan: #f5865f;
+  --cyan-dim: #2b2622;
+  --cyan-hover: #f5865f;
+  --text-primary: #f2efe8;
+  --text-secondary: #b3bcb8;
+  --text-muted: #8e9894;
+  --accent-red: #eb9d93;
+  --accent-green: #6fbf8a;
+  --accent-amber: #d8a657;
+  color-scheme: dark;
+}
+}
+
+.theme-selector {
+  font: inherit; font-size: 0.875rem; width: auto; max-width: 100%; min-height: 36px;
+  padding: 6px 10px; border: 1px solid var(--line); border-radius: 4px;
+  background: var(--panel); color: var(--ink-strong);
+}
+.theme-selector:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.auth-theme { padding: 12px; text-align: right; }
+
+:root[data-theme^="busnes-"] .btn-primary { color: var(--button-text); }
+
+/* Keep the header controls reachable when the theme picker wraps. */
+.navbar, .nav-right, .nav-center { flex-wrap: wrap; gap: 12px; }

@@ -229,7 +229,7 @@ export const SecuritySettings: React.FC<SecuritySettingsProps> = ({
               <div style={{ fontSize: '0.75rem', color: 'var(--cyan)', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.25rem' }}>
                 Your Emergency Recovery Key (Save in a safe location)
               </div>
-              <div style={{ fontSize: '1.25rem', fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.08em', color: '#fff', margin: '0.5rem 0' }}>
+              <div style={{ fontSize: '1.25rem', fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--text-primary)', margin: '0.5rem 0' }}>
                 {generatedPaperKey}
               </div>
               <button

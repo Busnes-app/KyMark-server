@@ -10,7 +10,7 @@ KyBookmark Server is the zero-knowledge encrypted bookmark synchronization and m
 4. **KySignOn SSO & Account Replication**: Native OIDC PKCE single sign-on with automatic redirect URI resolution; ID tokens are verified by `ky-primitives/oidcverify` against the issuer's JWKS with a per-login nonce (the issuer must be HTTPS). SSO sessions keep issuer, client, subject, `sid`, `iat` and `auth_time`; `POST /api/auth/oidc/backchannel-logout` verifies a `logout+jwt` with `oidcverify.VerifyLogout`, records the `jti` and ends the matching sessions in one transaction (`store.ApplySSOLogout`), and `store.CreateSession` refuses an SSO session a retained logout already covers. The directory-sync webhook (`/api/sync/events`) is verified by `ky-primitives/syncauth`: signature, timestamp window, event-id replay guard, and a signed `user.created`, `user.updated`, or `user.deleted` type over the bare SCIM user body KySignOn emits.
 5. **90s QR / PIN Device Pairing**: Ephemeral pairing flow (`/api/devices/pair/request`, `/api/devices/pair/approve`, `/api/devices/pair/redeem`) for trusted mobile and browser extensions.
 6. **Tamper-Evident Audit Logging**: HMAC-SHA256 hash chained log trail with verification. The chain key is per-install and never a constant — see "Audit chain" below.
-7. **Patina Look & Feel**: React + Vite interface with KySecurity Patina theme (`#0d0f14`, cyan `#4deeea`, `Space Grotesk`, `IBM Plex Mono`).
+7. **Look & Feel**: React + Vite interface with Busnes light/dark themes, a browser-local System/Light/Dark selector, Space Grotesk and IBM Plex Mono.
 8. **KyRecovery Backups**: sealed `kycap/3` capsules through `ky-primitives/recoveryclient`: pair with KyRecovery or pin the suite key by hand, local copies in `KYMARK_BACKUP_DIR`, an admin-set schedule, restore drill, and a `restore` subcommand. Every backup route, including the capsule export, is a CSRF-protected admin `POST`/`PUT`/`DELETE`; a GET never exports. See "KyRecovery backups" below and `docs/RESTORE.md`.
 
 ## Audit chain
@@ -210,6 +210,8 @@ Non-trivial logic must include one runnable check (unit test or minimal self-che
 - Keep Child DOX Index entries current and delete stale rules.
 
 ## User Preferences
+
+- Web themes default to the Busnes.app cream/light and charcoal/dark palettes with orange accents, following the OS until a browser-local choice is saved. Preserve existing named themes and saved choices.
 
 - Best-effort 90-second keyword refresh policy (foreground cadence; background catch-up on resume).
 - DOX hierarchy scope is app-only.
