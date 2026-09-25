@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Busness-app/ky-primitives/capsule"
-	"github.com/Busness-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/capsule"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
 	_ "modernc.org/sqlite"
 )
 

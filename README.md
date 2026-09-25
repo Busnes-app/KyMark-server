@@ -145,3 +145,7 @@ files stay under `DATA_DIR/drill` (0700) and are removed on return; the `.lock` 
 
 **Command line.** `kymark-server backup-drill`, `export-capsule <out>`, `deposit`, and
 `restore -capsule <file> -to <dir>` (shares on stdin). `serve` is the default.
+
+## Upgrading from ghcr.io/busness-app
+
+The GitHub organisation was renamed on 2026-09-16 and the image now lives at `ghcr.io/busnes-app/kymark-server`. The project no longer controls `ghcr.io/busness-app`; GHCR does not redirect it, and anything served under that name must be treated as untrusted. If `KYMARK_IMAGE` in `.env` still names the old namespace, re-pinning is required, not optional: run the digest procedure in `docs/RESTORE.md`, which resolves the commit you choose to a digest, verifies its attestation and writes the pin, then `docker compose pull`.

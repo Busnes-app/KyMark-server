@@ -13,12 +13,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Busness-app/ky-primitives/capsule"
-	"github.com/Busness-app/ky-primitives/recoveryclient"
-	"github.com/Busness-app/ky-primitives/recoverykey"
+	"github.com/Busnes-app/ky-primitives/capsule"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/recoverykey"
 
-	"github.com/Busness-app/kymark-server/internal/audit"
-	"github.com/Busness-app/kymark-server/internal/backup"
+	"github.com/Busnes-app/kymark-server/internal/audit"
+	"github.com/Busnes-app/kymark-server/internal/backup"
 )
 
 // recoveryClient is the slice of the KyRecovery client the handlers use; tests stand in a

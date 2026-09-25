@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Busness-app/kymark-server/internal/store"
+	"github.com/Busnes-app/kymark-server/internal/store"
 )
 
 // ssoLogoutBodyLimit bounds a logout delivery; a logout token is a few hundred bytes.

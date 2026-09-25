@@ -17,7 +17,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Busness-app/ky-primitives/auditchain"
+	"github.com/Busnes-app/ky-primitives/auditchain"
 )
 
 // newTestLogger builds a logger over fresh data/config dirs under root.

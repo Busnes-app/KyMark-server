@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Busness-app/kymark-server/internal/sso"
-	"github.com/Busness-app/kymark-server/internal/sso/ssotest"
+	"github.com/Busnes-app/kymark-server/internal/sso"
+	"github.com/Busnes-app/kymark-server/internal/sso/ssotest"
 )
 
 // stubIdP serves just enough OIDC for the callback: discovery, a JWKS, and a token

@@ -8,9 +8,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Busness-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
 
-	"github.com/Busness-app/kymark-server/internal/store"
+	"github.com/Busnes-app/kymark-server/internal/store"
 )
 
 // Member paths say where each file restores to: config/* into CONFIG_DIR, everything

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/Busness-app/ky-primitives/password"
+	"github.com/Busnes-app/ky-primitives/password"
 )
 
 // GenerateRandomBytes returns n cryptographically secure random bytes.

@@ -16,18 +16,18 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Busness-app/ky-primitives/keyfile"
-	"github.com/Busness-app/ky-primitives/oidcverify"
-	"github.com/Busness-app/ky-primitives/recoveryclient"
-	"github.com/Busness-app/ky-primitives/syncauth"
+	"github.com/Busnes-app/ky-primitives/keyfile"
+	"github.com/Busnes-app/ky-primitives/oidcverify"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/syncauth"
 
-	"github.com/Busness-app/kymark-server/internal/audit"
-	"github.com/Busness-app/kymark-server/internal/backup"
-	"github.com/Busness-app/kymark-server/internal/crypto"
-	"github.com/Busness-app/kymark-server/internal/devices"
-	"github.com/Busness-app/kymark-server/internal/sso"
-	"github.com/Busness-app/kymark-server/internal/store"
-	"github.com/Busness-app/kymark-server/internal/vault"
+	"github.com/Busnes-app/kymark-server/internal/audit"
+	"github.com/Busnes-app/kymark-server/internal/backup"
+	"github.com/Busnes-app/kymark-server/internal/crypto"
+	"github.com/Busnes-app/kymark-server/internal/devices"
+	"github.com/Busnes-app/kymark-server/internal/sso"
+	"github.com/Busnes-app/kymark-server/internal/store"
+	"github.com/Busnes-app/kymark-server/internal/vault"
 )
 
 const (
@@ -236,6 +236,7 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("GET /favicon.ico", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "image/svg+xml")
 		if data, err := os.ReadFile(filepath.Join(s.cfg.WebDir, "favicon.ico")); err == nil {
+			w.Header().Set("Content-Type", "image/x-icon")
 			_, _ = w.Write(data)
 			return
 		}

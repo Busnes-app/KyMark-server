@@ -3,17 +3,17 @@ package main
 import (
 	"bytes"
 	"context"
-	"github.com/Busness-app/ky-primitives/keyfile"
-	"github.com/Busness-app/kymark-server/internal/audit"
-	"github.com/Busness-app/kymark-server/internal/backup"
-	"github.com/Busness-app/kymark-server/internal/store"
+	"github.com/Busnes-app/ky-primitives/keyfile"
+	"github.com/Busnes-app/kymark-server/internal/audit"
+	"github.com/Busnes-app/kymark-server/internal/backup"
+	"github.com/Busnes-app/kymark-server/internal/store"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
-	"github.com/Busness-app/ky-primitives/recoveryclient"
-	"github.com/Busness-app/ky-primitives/recoverykey"
+	"github.com/Busnes-app/ky-primitives/recoveryclient"
+	"github.com/Busnes-app/ky-primitives/recoverykey"
 )
 
 // A capsule from another service is refused on its manifest, before any share is combined:

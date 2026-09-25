@@ -1,6 +1,6 @@
 **Repo:** kybookmarks-server
-**PR:** #18 — https://github.com/Busness-app/kybookmarks-server/pull/18 (merged auth baseline)
-**PR:** #19 — https://github.com/Busness-app/kybookmarks-server/pull/19 (merged backup baseline; no new PR)
+**PR:** #18 — https://github.com/Busnes-app/kybookmarks-server/pull/18 (merged auth baseline)
+**PR:** #19 — https://github.com/Busnes-app/kybookmarks-server/pull/19 (merged backup baseline; no new PR)
 **Worktree:** /home/yoshi/busness.app/kybookmarks-server (master; planning from fetched origin/master 95852bb1db6f3ae54ad6008799c3a2968f180e28)
 
 # Post 291: v0.5.1 drill migration and recovery proof
@@ -27,7 +27,7 @@ Before upgrading, generate a small synthetic pairing fixture using the pinned v0
 
 Expected changes: `go.mod`, `go.sum`, `internal/backup/drill.go`, its tests, the HTTP and CLI callers. Change `payload.go` only if a shared declaration is needed to keep collector and validator requirements aligned.
 
-1. Pin `github.com/Busness-app/ky-primitives@v0.5.1` and tidy. Keep the existing Go requirement and review unrelated module changes.
+1. Pin `github.com/Busnes-app/ky-primitives@v0.5.1` and tidy. Keep the existing Go requirement and review unrelated module changes.
 2. Make `Checks(dir string, opened capsule.Manifest)` the callback directly; remove the captured-payload closure. Both production callers pass the same function. Do not cast or substitute an unverified manifest.
 3. Validate the opened service name and the recipe object at the boundary. Decode `required_tables` as the JSON-produced `[]any`, checking every item is a nonempty string. Require a correctly typed `require_any_admin: true`. Missing, malformed, or weakened required fields produce failed checks rather than skipping verification.
 4. Use the authenticated `opened.Files` for member checks. Require the fixed core members even when the manifest omits them: `kybookmarks.db`, `config/{audit.key,audit.state,enum.key,deployment.key}`, `audit/audit.log`, and `manifest.json`. SSO config and `recovery.pub` remain conditional as in the collector; every listed member must exist as a regular file.

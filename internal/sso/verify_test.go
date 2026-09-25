@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Busness-app/kymark-server/internal/sso/ssotest"
+	"github.com/Busnes-app/kymark-server/internal/sso/ssotest"
 )
 
 func TestVerifiedClaimsAcceptsAGoodTokenAndRefusesAlgNone(t *testing.T) {
