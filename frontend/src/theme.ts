@@ -1,7 +1,8 @@
+import { readChoice, saveChoice, watchChoice } from './ky-ui/theme';
 // Busnes.app defaults; explicit choices are local to this browser.
 export const THEME_OPTIONS = [{"id": "system", "label": "System (Busnes)"}, {"id": "busnes-light", "label": "Busnes Light"}, {"id": "busnes-dark", "label": "Busnes Dark"}];
 export function storedTheme(): string {
-  try { const value = localStorage.getItem('kymark-theme'); return THEME_OPTIONS.find(t => t.id === value)?.id ?? 'system'; }
+  try { const value = readChoice('kymark-theme'); return THEME_OPTIONS.find(t => t.id === value)?.id ?? 'system'; }
   catch { return 'system'; }
 }
 let current = storedTheme();
@@ -12,8 +13,7 @@ export function applyTheme(theme: string, persist = false) {
   const resolved = theme === 'system' ? (media?.matches ? 'busnes-dark' : 'busnes-light') : theme;
   document.documentElement.dataset.theme = resolved;
   document.documentElement.style.colorScheme = ['busnes-light', 'paper'].includes(resolved) ? 'light' : 'dark';
-  if (persist) try { localStorage.setItem('kymark-theme', theme); } catch { /* Storage is optional. */ }
+  if (persist) try { saveChoice('kymark-theme', theme); } catch { /* Storage is optional. */ }
 }
 applyTheme(current);
-media?.addEventListener('change', () => { if (current === 'system') applyTheme(current); });
-window.addEventListener('storage', e => { if (e.key === 'kymark-theme' || e.key === null) applyTheme(storedTheme()); });
+watchChoice('kymark-theme', () => applyTheme(storedTheme()), () => current !== 'system');

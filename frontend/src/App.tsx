@@ -133,7 +133,8 @@ export const App: React.FC = () => {
 
         <div className="nav-center">
           <button
-            className={`nav-item ${activeTab === 'bookmarks' ? 'active' : ''}`}
+            className={`ky-nav-item nav-item ${activeTab === 'bookmarks' ? 'active' : ''}`}
+            aria-current={activeTab === 'bookmarks' ? 'page' : undefined}
             onClick={() => setActiveTab('bookmarks')}
           >
             <Bookmark size={16} />
@@ -141,7 +142,8 @@ export const App: React.FC = () => {
           </button>
 
           <button
-            className={`nav-item ${activeTab === 'security' ? 'active' : ''}`}
+            className={`ky-nav-item nav-item ${activeTab === 'security' ? 'active' : ''}`}
+            aria-current={activeTab === 'security' ? 'page' : undefined}
             onClick={() => setActiveTab('security')}
           >
             <Key size={16} />
@@ -150,7 +152,8 @@ export const App: React.FC = () => {
 
           {user.role === 'admin' && (
             <button
-              className={`nav-item ${activeTab === 'admin' ? 'active' : ''}`}
+            className={`ky-nav-item nav-item ${activeTab === 'admin' ? 'active' : ''}`}
+            aria-current={activeTab === 'admin' ? 'page' : undefined}
               onClick={() => setActiveTab('admin')}
             >
               <ShieldCheck size={16} />
