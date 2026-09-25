@@ -68,10 +68,13 @@ a {
 
 /* Layout */
 .app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: 15.5rem minmax(0, 1fr);
+  min-height: 100vh;
+}
+.app-container > :not(.navbar) {
+  grid-column: 2;
+  min-width: 0;
 }
 
 .main-content {
@@ -82,13 +85,19 @@ a {
 
 /* Navbar */
 .navbar {
+  grid-column: 1;
+  grid-row: 1;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.25rem;
+  padding: 1.25rem 1rem;
+  background: linear-gradient(180deg, var(--bg-secondary), var(--bg-card));
+  border-right: 1px solid var(--border-color);
   z-index: 10;
+  position: sticky;
+  top: 0;
+  height: 100vh;
 }
 
 .nav-brand {
@@ -112,7 +121,7 @@ a {
 
 .nav-center {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 0.5rem;
 }
 
@@ -138,13 +147,17 @@ a {
 .nav-item.active {
   background-color: var(--cyan-dim);
   color: var(--cyan);
-  border-color: rgba(77, 238, 234, 0.3);
+  border-color: transparent;
+  border-left: 3px solid var(--cyan);
 }
+.nav-item.active { border-left: 3px solid var(--cyan); }
 
 .nav-right {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 0.75rem;
+  margin-top: auto;
 }
 
 /* Buttons */
@@ -760,3 +773,12 @@ a {
 
 /* Keep the header controls reachable when the theme picker wraps. */
 .navbar, .nav-right, .nav-center { flex-wrap: wrap; gap: 12px; }
+
+@media (max-width: 760px) {
+  .app-container { display: block; }
+  .app-container > :not(.navbar) { min-width: 0; }
+  .navbar { position: sticky; height: auto; padding: .75rem 1rem; border-right: 0; border-bottom: 1px solid var(--border-color); }
+  .nav-center, .nav-right { flex-direction: row; align-items: center; margin-top: 0; overflow-x: auto; }
+  .nav-item { flex: 0 0 auto; border-left: 0; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .nav-item.active { border-left: 0; border-bottom-color: var(--cyan); }
+}
