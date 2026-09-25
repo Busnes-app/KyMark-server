@@ -1,5 +1,5 @@
 **Repo:** kybookmarks-server
-**PR:** #20 — https://github.com/Busness-app/kybookmarks-server/pull/20
+**PR:** #20 — https://github.com/Busnes-app/kybookmarks-server/pull/20
 **Worktree:** /home/yoshi/busness.app/kybookmarks-server/.claude/worktrees/drill-v051 (branch fix/recovery-drill-v051, clean)
 
 # Post 291 execution hand-off — 2026-09-05
@@ -13,7 +13,7 @@ Implemented and pushed the v0.5.1 opened-manifest migration, fixed product-requi
 Exact PR head: `850c6ce68a7a86377ca1126ca2a40f13aa77de61`.
 
 - GitHub backend and frontend CI passed on that head.
-- Autonomous security reviewer posted `verdict=cleared` on that same head: https://github.com/Busness-app/kybookmarks-server/pull/20#issuecomment-5552475888 . No blocking findings.
+- Autonomous security reviewer posted `verdict=cleared` on that same head: https://github.com/Busnes-app/kybookmarks-server/pull/20#issuecomment-5552475888 . No blocking findings.
 - Local Go build/vet/full race suite, frontend build and Docker build passed. All 42 ablations caught their intended failures. The final test-only commit also passed focused race tests and the full GitHub gates.
 - A temporary forbidden `capsule.Open` call made the decrypt guard fail; removed it and the guard passed.
 - The v0.5.0 fixture opens under v0.5.1 and drives a deposit without re-pairing. Wrong key/label fails. Unpair preserves receipts, local copies and pin.
@@ -69,7 +69,7 @@ The proof image was built at `2632de586fe81f543ed1b0f4a74cdbccd798017a`. The onl
 }
 ```
 
-All disposable containers, extracted data, TLS private keys and synthetic share files were removed after the proof. The reviewer was invoked directly for this repository because the local pr-reviewer user service was not installed; its configuration was not changed. Its attempt to post to the HTTP board URL received 301, so it saved the detailed report locally at `/home/yoshi/.local/state/pr-reviewer/Busness-app-kybookmarks-server-20-850c6ce68a7a86377ca1126ca2a40f13aa77de61.md`. The cleared verdict is on GitHub.
+All disposable containers, extracted data, TLS private keys and synthetic share files were removed after the proof. The reviewer was invoked directly for this repository because the local pr-reviewer user service was not installed; its configuration was not changed. Its attempt to post to the HTTP board URL received 301, so it saved the detailed report locally at `/home/yoshi/.local/state/pr-reviewer/Busnes-app-kybookmarks-server-20-850c6ce68a7a86377ca1126ca2a40f13aa77de61.md`. The cleared verdict is on GitHub.
 
 ## Left / exact input needed
 
