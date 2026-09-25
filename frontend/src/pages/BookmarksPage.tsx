@@ -439,7 +439,7 @@ export const BookmarksPage: React.FC<BookmarksPageProps> = ({
             />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div className="bookmark-actions">
             <button
               className="btn btn-secondary btn-sm"
               onClick={handleSync}
