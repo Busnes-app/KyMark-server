@@ -20,24 +20,42 @@
 }
 
 :root {
-  --bg-primary: #0a0c10;
-  --bg-secondary: #0f131a;
-  --bg-card: #141a24;
-  --bg-card-hover: #1b2331;
-  --border-color: #1e293b;
-  --border-focus: #4deeea;
-  --cyan: #4deeea;
-  --cyan-dim: rgba(77, 238, 234, 0.15);
-  --cyan-hover: #75f3f0;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --accent-red: #f43f5e;
-  --accent-red-dim: rgba(244, 63, 94, 0.15);
-  --accent-green: #10b981;
-  --accent-green-dim: rgba(16, 185, 129, 0.15);
-  --accent-amber: #f59e0b;
-  --accent-amber-dim: rgba(245, 158, 11, 0.15);
+  /* Busnes Dark is the safe pre-theme fallback; theme.ts immediately resolves
+     System to the OS preference before the app paints. */
+  --bg: #182326;
+  --panel: #1f2b2e;
+  --ink: #b3bcb8;
+  --ink-strong: #f2efe8;
+  --accent: #f5865f;
+  --accent-soft: #2b2622;
+  --line: rgba(242, 239, 232, 0.24);
+  --accent-hover: #f5865f;
+  --line-focus: #f5865f;
+  --danger: #eb9d93;
+  --success: #6fbf8a;
+  --warning: #d8a657;
+  --panel-hover: #243033;
+  --button-text: #182326;
+
+  /* Legacy component aliases. New styles should use the Busnes names above. */
+  --bg-primary: var(--bg);
+  --bg-secondary: var(--panel);
+  --bg-card: var(--panel);
+  --bg-card-hover: var(--panel-hover);
+  --border-color: var(--line);
+  --border-focus: var(--line-focus);
+  --cyan: var(--accent);
+  --cyan-dim: var(--accent-soft);
+  --cyan-hover: var(--accent-hover);
+  --text-primary: var(--ink-strong);
+  --text-secondary: var(--ink);
+  --text-muted: var(--ink-muted, var(--ink));
+  --accent-red: var(--danger);
+  --accent-red-dim: var(--accent-soft);
+  --accent-green: var(--success);
+  --accent-green-dim: var(--accent-soft);
+  --accent-amber: var(--warning);
+  --accent-amber-dim: var(--accent-soft);
   --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
   --radius: 8px;
@@ -150,7 +168,6 @@ a {
   border-color: transparent;
   border-left: 3px solid var(--cyan);
 }
-.nav-item.active { border-left: 3px solid var(--cyan); }
 
 .nav-right {
   display: flex;
