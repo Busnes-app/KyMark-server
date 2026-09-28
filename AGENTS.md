@@ -181,8 +181,9 @@ return the same cached `ky.health/1` body for up to five seconds. Both are anony
 The only checks are `store.DB().PingContext` (`database`) and the process's atomic
 audit-write-failure bit (`audit`). Database failure is `down`/HTTP 503; audit failure is
 `degraded`/HTTP 200 with the fixed `append_disabled` reason. The response contains no
-database error, audit count, vault, account, device, or user data. Docker liveness still
-checks `/api/health`; its existing meaning for audit degradation remains HTTP 200.
+database error, audit count, vault, account, device, or user data. Docker's healthcheck
+still targets `/api/health`; it reports container health but does not restart an unhealthy
+container. Audit degradation remains HTTP 200; database failure makes the check unhealthy.
 
 ## Verification & Build Commands
 
