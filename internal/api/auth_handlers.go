@@ -710,22 +710,3 @@ func (s *Server) handleSSOUnlink(w http.ResponseWriter, r *http.Request) {
 	s.auditEvent(r, "sso.unlink", acc.ID, "", "unlinked SSO identity")
 	writeJSON(w, http.StatusOK, map[string]bool{"ok": true})
 }
-
-func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
-	// Degraded, not 503: see Server.auditEvent. TestDegradedHealthStaysHTTP200 pins the
-	// status code, because that is the whole of this decision.
-	//
-	// The coarse bit is all an unauthenticated caller gets. The count used to be here
-	// too, and it told anyone filling the disk exactly how many writes their fill had
-	// already cost — a calibration signal worth nothing to an operator who can read
-	// stderr. The number goes to the server log.
-	status := "ok"
-	if s.auditFailures.Load() > 0 {
-		status = "degraded"
-	}
-	writeJSON(w, http.StatusOK, map[string]any{
-		"status":  status,
-		"service": "kymark-server",
-		"time":    time.Now().UTC(),
-	})
-}
