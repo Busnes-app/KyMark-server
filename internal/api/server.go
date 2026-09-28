@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
@@ -16,7 +17,9 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/Busnes-app/ky-primitives/health"
 	"github.com/Busnes-app/ky-primitives/keyfile"
+	"github.com/Busnes-app/ky-primitives/logging"
 	"github.com/Busnes-app/ky-primitives/oidcverify"
 	"github.com/Busnes-app/ky-primitives/recoveryclient"
 	"github.com/Busnes-app/ky-primitives/syncauth"
@@ -35,6 +38,8 @@ const (
 	csrfCookieName    = "csrf_token"
 	ssoCookieName     = "kymark_sso_state"
 )
+
+var auditUnavailable = health.DeclareReason("append_disabled")
 
 // BackupConfig is the env-derived side of the backup contract. The live schedule is an
 // admin setting; DepositInterval is only its default.
@@ -62,6 +67,7 @@ type Server struct {
 	devices  *devices.Store
 	ssoStore *sso.Store
 	audit    *audit.Logger
+	health   http.Handler
 	cfg      Config
 
 	loginAttemptsMu sync.Mutex
@@ -154,6 +160,10 @@ type loginAttemptTracker struct {
 }
 
 func NewServer(s *store.Store, vm *vault.Manager, ds *devices.Store, ss *sso.Store, al *audit.Logger, cfg Config) (*Server, error) {
+	lg, err := logging.New(logging.Config{App: "kymark"})
+	if err != nil {
+		return nil, err
+	}
 	saltKey, err := loadOrCreateSaltKey(cfg.ConfigDir)
 	if err != nil {
 		return nil, err
@@ -162,7 +172,7 @@ func NewServer(s *store.Store, vm *vault.Manager, ds *devices.Store, ss *sso.Sto
 	if err != nil {
 		return nil, err
 	}
-	return &Server{
+	srv := &Server{
 		store:         s,
 		vault:         vm,
 		devices:       ds,
@@ -174,7 +184,17 @@ func NewServer(s *store.Store, vm *vault.Manager, ds *devices.Store, ss *sso.Sto
 		syncReplay:    syncauth.NewMemoryReplay(0, 0),
 		recovery:      recoveryclient.NewClient(recoveryclient.Options{AllowPrivate: cfg.Backup.AllowPrivateRecovery}),
 		sealer:        sealer,
-	}, nil
+	}
+	srv.health = health.Handler("kymark", lg,
+		health.Check{Name: "database", Run: s.DB().PingContext},
+		health.Check{Name: "audit", Run: func(context.Context) error {
+			if srv.auditFailures.Load() > 0 {
+				return health.Degrade(auditUnavailable)
+			}
+			return nil
+		}},
+	)
+	return srv, nil
 }
 
 // verifierFor returns the cached verifier for the current SSO settings, rebuilding it when
@@ -220,7 +240,8 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("GET /auth/oidc/callback", s.handleSSOCallback)
 	mux.HandleFunc("GET /auth/sso/callback", s.handleSSOCallback)
 	mux.HandleFunc("POST /api/auth/oidc/backchannel-logout", s.handleSSOLogout)
-	mux.HandleFunc("GET /api/health", s.handleHealth)
+	mux.Handle("GET /healthz", s.health)
+	mux.Handle("GET /api/health", s.health)
 	mux.HandleFunc("GET /api/setup", s.handleSetupCheck)
 	mux.HandleFunc("POST /api/setup", s.handleSetupInit)
 

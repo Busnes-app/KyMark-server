@@ -119,13 +119,15 @@ ABLATIONS = [
   "\tif l.stale {\n\t\tif err := l.recover(); err != nil {",
   "\tif false && l.stale {\n\t\tif err := l.recover(); err != nil {"),
 
- ("degraded health answers 503", AUTH, "TestDegradedHealthStaysHTTP200",
-  '\twriteJSON(w, http.StatusOK, map[string]any{\n\t\t"status":  status,',
-  '\tcode := http.StatusOK\n\tif status == "degraded" {\n\t\tcode = http.StatusServiceUnavailable\n\t}\n\twriteJSON(w, code, map[string]any{\n\t\t"status":  status,'),
+ ("degraded health answers 503", SERVER, "TestDegradedHealthStaysHTTP200|TestHealthAuditFailureIsDegraded",
+  "\t\t\t\treturn health.Degrade(auditUnavailable)",
+  "\t\t\t\treturn health.Fail(auditUnavailable)"),
 
- ("health hands the failure count to anyone who asks", AUTH, "TestAuditWriteFailureIsNotSilent",
-  '\t\t"service": "kymark-server",\n\t\t"time":    time.Now().UTC(),',
-  '\t\t"service": "kymark-server",\n\t\t"auditWriteFailures": s.auditFailures.Load(),\n\t\t"time":    time.Now().UTC(),'),
+ # Response sanitization is owned by ky-primitives/health and pinned there; this
+ # product-level mutation proves KyMark still wires its real database probe.
+ ("health skips database ping", SERVER, "TestHealthDatabaseFailure",
+  '\t\thealth.Check{Name: "database", Run: s.DB().PingContext},',
+  '\t\thealth.Check{Name: "database", Run: func(context.Context) error { return nil }},'),
 
  ("a failed audit write is discarded again", SERVER, "TestAuditWriteFailureIsNotSilent",
   "\t_, err := s.audit.Log(r.Context(), action, userID, deviceID, clientIP(r), details)\n\tif err == nil {",

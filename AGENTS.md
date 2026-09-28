@@ -102,7 +102,7 @@ Rules for anyone touching this package:
   line decoded. Both are boot failures; only the wording and the remedy differ.
 - **A failed audit write is never discarded.** `internal/api` routes all 28 call sites
   through `Server.auditEvent`, which on failure logs to stderr (per `LOGGING.md`) and
-  increments a counter that flips `/api/health`'s `status` to `degraded`. The *count* is
+  increments a counter that flips the public health response's `status` to `degraded`. The *count* is
   not in that body: an unauthenticated caller filling the disk would be reading its own
   progress meter. It does not fail the request: every call site logs after the action has
   already happened, so a 500 would neither undo it nor restore the record, and would invite
@@ -173,6 +173,17 @@ Pairing, key pin, schedule, local copies, deposit, drill mechanics and restore a
 - `testdata/pairing-v050.json` under `internal/backup` is synthetic v0.5.0 output. Upgrade
   tests must load that ciphertext and pin, not regenerate them using the version under test.
 - The backup loop starts unconditionally and polls the schedule setting every minute.
+
+## Public health
+
+`GET /healthz` and legacy `GET /api/health` use one `ky-primitives/health` handler and
+return the same cached `ky.health/1` body for up to five seconds. Both are anonymous.
+The only checks are `store.DB().PingContext` (`database`) and the process's atomic
+audit-write-failure bit (`audit`). Database failure is `down`/HTTP 503; audit failure is
+`degraded`/HTTP 200 with the fixed `append_disabled` reason. The response contains no
+database error, audit count, vault, account, device, or user data. Docker's healthcheck
+still targets `/api/health`; it reports container health but does not restart an unhealthy
+container. Audit degradation remains HTTP 200; database failure makes the check unhealthy.
 
 ## Verification & Build Commands
 

@@ -64,6 +64,17 @@ a client in KySignOn, set its back-channel logout URI to
 KyMark sessions too. Without it, an SSO session lasts until it expires or the user signs
 out here.
 
+## Health
+
+`GET /healthz` is the public suite health endpoint; `GET /api/health` remains an alias for
+the existing Docker healthcheck and pollers. Both return the same `ky.health/1` JSON response,
+cached for five seconds. `database` checks the live database connection; `audit` checks
+whether an audit append has failed in this process. A database failure reports `down` with
+HTTP 503. An audit failure reports `degraded` with HTTP 200 and the fixed reason
+`append_disabled`, preserving the existing audit status behavior. Docker reports an unhealthy
+container on HTTP 503 but does not restart it for that reason alone. The response has no database
+error text, audit count, vault content, or account and device details.
+
 ## Disaster recovery
 
 Every backup is a `.kycap` capsule sealed to the suite recovery public key. The server holds
